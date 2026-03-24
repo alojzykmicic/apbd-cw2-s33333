@@ -34,4 +34,16 @@ public class RentalService
         
         return Result.Success();
     }
+
+    public Result ReturnEquipment(Rental rental, DateTime returnDate)
+    {
+        if (!rental.isActive)
+            return Result.Failure("Wypozyczenie zostalo juz zakonczone.");
+
+        var penalty = _penaltyCalc.CalculatePenalty(rental.DueDate, returnDate);
+        rental.MarkAsReturned(returnDate, penalty);
+        rental.Equipment.Status = EquipmentStatus.Available;
+        
+        return Result.Success();
+    }
 }
