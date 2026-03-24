@@ -55,4 +55,11 @@ public class RentalService
         equipment.Status = EquipmentStatus.Unavailable;
         return Result.Success();
     }
+
+    public IEnumerable<Equipment> GetAllEquipment() => _equipments;
+    public IEnumerable<Equipment> GetAvailableEquipment() => _equipments.Where(e => e.Status == EquipmentStatus.Available);
+    public IEnumerable<Rental> GetActiveUserRentals(User user) => _rentals.Where(r => r.User.Id == user.Id && r.isActive);
+
+    public IEnumerable<Rental> GetOverDueRentals(DateTime currentDate) =>
+        _rentals.Where(r => r.isActive && r.DueDate < currentDate);
 }
