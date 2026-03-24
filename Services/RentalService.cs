@@ -46,4 +46,13 @@ public class RentalService
         
         return Result.Success();
     }
+
+    public Result MarkEquipmentAsUnavailable(Equipment equipment)
+    {
+        if (equipment.Status == EquipmentStatus.Rented)
+            return Result.Failure("Status wypozyczonego itema nie moze byc zmieniony na niedostepny.");
+        
+        equipment.Status = EquipmentStatus.Unavailable;
+        return Result.Success();
+    }
 }
